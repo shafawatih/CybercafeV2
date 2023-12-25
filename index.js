@@ -17,7 +17,7 @@ const options = {
   apis: ['./Cybercafe.js'], //files containing annotations as above
 };
 const swaggerSpec = swaggerJsdoc(options);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/group23', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //connect to mongodb 
 const { MongoClient, ServerApiVersion } = require('mongodb');
