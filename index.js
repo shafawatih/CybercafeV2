@@ -21,7 +21,7 @@ app.use('/group23', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //connect to mongodb 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://shafawatih:UTMfMYdjISYTb0FR@cluster0.eha480i.mongodb.net/";
+const uri = "mongodb+srv://shafawatih:UTMfMYdjISYTb0FR@cluster0.eha480i.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -213,7 +213,7 @@ run().catch(console.dir);
 //function 放下面
 
 async function login(requsername, reqpassword) {
-    let matchUser = await client.db('Cybercafe').collection('Admin').findOne({ username: { $eq: requsername } });
+    let matchUser = await client.db('CybercafeV2').collection('admin').findOne({ username: { $eq: requsername } });
   
     if (!matchUser)
       return { message: "User not found!" };
@@ -226,7 +226,7 @@ async function login(requsername, reqpassword) {
 
 //create user function
 function createuser(requsername, reqidproof) {
-  client.db('Cybercafe').collection('Admin').insertOne({
+  client.db('CybercafeV2').collection('admin').insertOne({
       "username": requsername,
       "idproof": reqidproof,
     });
@@ -235,7 +235,7 @@ function createuser(requsername, reqidproof) {
   
 //create visitor function
 function createvisitor(reqvisitorname, reqidproof, reqentrytime = 0) {
-    client.db('Cybercafe').collection('Visitor').insertOne({
+    client.db('CybercafeV2').collection('visitor').insertOne({
         "visitorname": reqvisitorname,
         "idproof": reqidproof,
         "entrytime":reqentrytime
@@ -245,7 +245,7 @@ function createvisitor(reqvisitorname, reqidproof, reqentrytime = 0) {
 
 //create visitorlog function
 function createvisitorlog(reqvisitorname, reqidproof, reqtimespend = 0, reqpayment = 0) {
-    client.db('Cybercafe').collection('Visitor Log').insertOne({
+    client.db('CybercafeV2').collection('visitorlog').insertOne({
         "visitorname": reqvisitorname,
         "idproof": reqidproof,
         "timespend": reqtimespend,
@@ -256,7 +256,7 @@ function createvisitorlog(reqvisitorname, reqidproof, reqtimespend = 0, reqpayme
 
 //create computer function
 function createcomputer(reqidproof, reqLanportno, reqAvailable) {
-  client.db('Cybercafe').collection('Computer').insertOne({
+  client.db('CybercafeV2').collection('computer').insertOne({
 
       "idproof": reqidproof,
       "lanportno": reqLanportno,
