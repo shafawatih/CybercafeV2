@@ -35,7 +35,7 @@ async function run() {
     // Connect the client to the server (optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
-    await client.db("Admin").command({ ping: 1 });
+    await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
     app.use(express.json());
@@ -74,8 +74,8 @@ async function run() {
     app.get('/view/user/admin', verifyToken, async (req, res) => {
       try {
       const result = await client
-          .db('Cybercafe')
-          .collection('Admin')
+          .db('CybercafeV2')
+          .collection('admin')
           .find()
           .toArray();
     
@@ -107,8 +107,8 @@ async function run() {
     app.get('/view/visitor/admin', verifyToken, async (req, res) => {
         try {
         const result = await client
-            .db('Cybercafe')
-            .collection('Visitor')
+            .db('CybercafeV2')
+            .collection('visitor')
             .find()
             .toArray();
     
@@ -126,8 +126,8 @@ async function run() {
     
       try {
         const deletevisitorResult = await client
-          .db('Cybercafe')
-          .collection('Visitor')
+          .db('CybercafeV2')
+          .collection('visitor')
           .deleteOne({ idproof: idproof});
     
         if (deletevisitorResult.deletedCount === 0) {
@@ -158,8 +158,8 @@ async function run() {
     app.get('/view/visitorlog/admin', verifyToken, async (req, res) => {
         try {
         const result = await client
-            .db('Cybercafe')
-            .collection('Visitor Log')
+            .db('CybercafeV2')
+            .collection('visitorlog')
             .find()
             .toArray();
     
@@ -185,7 +185,7 @@ async function run() {
     app.get('/view/computer/admin', verifyToken, async (req, res) => {
       try {
         const result = await client
-        .db('Cybercafe').collection('Computer').find().toArray();
+        .db('CybercafeV2').collection('computer').find().toArray();
         
         res.send(result);
       } catch (error) {
