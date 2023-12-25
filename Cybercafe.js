@@ -14,8 +14,7 @@
  *   post:
  *     summary: Perform login admin
  *     tags:
- *     - name: Admin Access
- *       description: Only use for Admin
+ *       - Admin Access
  *     requestBody:
  *       content:
  *         application/json:
@@ -52,7 +51,7 @@
  * @swagger
  * /create/user:
  *   post:
- *     summary: Create a User
+ *     summary: Create a New User
  *     tags:
  *       - User Management
  *     requestBody:
@@ -91,7 +90,7 @@
  * paths:
  *   /view/user/admin:
  *     get:
- *       summary: View Users
+ *       summary: View List of Users
  *       tags:
  *         - User Management
  *       security:
@@ -126,7 +125,7 @@
  * @swagger
  * /create/visitor:
  *   post:
- *     summary: Create a Visitor
+ *     summary: Register a New Visitor
  *     tags:
  *       - Visitor List
  *     requestBody:
@@ -168,7 +167,7 @@
  * paths:
  *   /view/visitor/admin:
  *     get:
- *       summary: View Visitors
+ *       summary: View List of Visitors
  *       tags:
  *         - Visitor List
  *       security:
@@ -202,7 +201,7 @@
  * paths:
  *   /delete/visitor/{idproof}:
  *     delete:
- *       summary: Delete Visitors
+ *       summary: Delete a Visitor
  *       tags:
  *         - Visitor List
  *       security:
@@ -239,7 +238,7 @@
  * @swagger
  * /create/visitorlog/admin:
  *   post:
- *     summary: Create a visitorlog
+ *     summary: Create a visitor log
  *     tags:
  *       - Visitor Log
  *     security:
@@ -283,7 +282,7 @@
  * @openapi
  * /view/visitorlog/admin:
  *   get:
- *     summary: View all visitor logs on by admin
+ *     summary: View visitor logs
  *     tags:
  *       - Visitor Log
  *     security:
@@ -309,7 +308,7 @@
  * @swagger
  * /create/computer:
  *   post:
- *     summary: Create a computer's availability
+ *     summary: Create a Computer's Availability
  *     tags:
  *       - Computer
  *     requestBody:
@@ -349,7 +348,7 @@
  * @openapi
  * /view/computer/admin:
  *   get:
- *     summary: View all computer's availability by admin
+ *     summary: Find Computer's Availability
  *     tags:
  *       - Computer
  *     security:
