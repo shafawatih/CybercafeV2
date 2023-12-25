@@ -102,8 +102,8 @@
  *             application/json:
  *               example:
  *                 visitors:
- *                   - visitorname: "ayam"
- *                     id: "999999999"
+ *                   - visitorname: "Dr Lim"
+ *                     id: "B0987"
  *         '401':
  *           description: Unauthorized. Only admin can view
  *           content:
@@ -179,8 +179,8 @@
  *             application/json:
  *               example:
  *                 visitors:
- *                   - visitorname: "ayam"
- *                     idproof: "999999999"
+ *                   - visitorname: "Dr Lim"
+ *                     idproof: "B0987"
  *                     entrytime: "1530"
  *         '401':
  *           description: Unauthorized. Only admin can view
@@ -217,8 +217,8 @@
  *             application/json:
  *               example:
  *                 visitors:
- *                   - visitorname: "ayam"
- *                     idproof: "999999999"
+ *                   - visitorname: "Dr Lim"
+ *                     idproof: "B0987"
  *                     entrytime: "1530"
  *         '401':
  *           description: Unauthorized. Only admin can view
@@ -293,9 +293,9 @@
  *         content:
  *           application/json:
  *             example:
- *               - visitorname: ayam
- *                 idproof: 9999999
- *                 timespend: 2 hours
+ *               - visitorname: Dr Lim
+ *                 idproof: B0987
+ *                 timespend: 2 hours 30 minutes
  *                 payment: $10
  *               - visitorname: Jane Doe
  *       401:
@@ -359,8 +359,8 @@
  *         content:
  *           application/json:
  *             example:
- *               - idproof: 9999999
- *                 lanportno: 317
+ *               - idproof: B0987
+ *                 lanportno: 31712
  *                 available: yes
  *               - visitorname: Jane Doe
  *       401:
