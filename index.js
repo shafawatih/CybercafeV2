@@ -9,8 +9,8 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Cybercafe Visitor Management System API',
-      description: 'API for managing visitors in a cybercafe',
+      title: 'Cybercafe Visitor Management System GROUP 23',
+      description: 'API for managing visitors in a cybercafe using Swagger and Node.js',
       version: '1.0.0',
     },
   },

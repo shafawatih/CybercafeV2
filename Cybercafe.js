@@ -12,9 +12,10 @@
  * @swagger
  * /login/admin:
  *   post:
- *     summary: Login Admin
+ *     summary: Perform login admin
  *     tags:
  *       - Admin Access
+ *       - Identifying the admin
  *     requestBody:
  *       content:
  *         application/json:
