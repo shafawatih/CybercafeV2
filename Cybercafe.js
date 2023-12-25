@@ -14,8 +14,8 @@
  *   post:
  *     summary: Perform login admin
  *     tags:
- *       - Admin Access
- *       - Identifying the admin
+ *     - name: Admin Access
+ *       description: Only use for Admin
  *     requestBody:
  *       content:
  *         application/json:
