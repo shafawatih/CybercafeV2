@@ -25,8 +25,6 @@
  *                 type: string
  *               password:
  *                 type: string
- *                 description: >- 
- *                              Use strong password contains at least one one uppercase letter, one lowercase letter, one digit, and one special symbol.
  *     responses:
  *       200:
  *         description: Success
