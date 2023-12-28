@@ -12,6 +12,7 @@ app.use(express.json());
 // Set up middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views')); // Set the views directory
 
 //swagger
 const options = {
@@ -30,7 +31,7 @@ const swaggerSpec = swaggerJsdoc(options);
 app.use('/group23', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
   // Dummy user data (replace with a proper authentication system)
-const admin = [
+const user = [
   { username: 'user1', password: 'password1' },
   ];
   
@@ -66,9 +67,9 @@ async function run() {
         const result =  await login(req.body.username, req.body.password)
         if (result.message === 'Correct password') {
           const token = generateToken({ username: req.body.username });
-          res.send({ message: 'Successful login', token });
+          res.send({ message: 'Successful login ! Welcome to Cybercafe Visitor Management System, ${req.body.username}!', token });
         } else {
-          res.send('Login unsuccessful');
+          res.send('Login unsuccessful ! Invalid username or password.');
         }
       }catch(error){
             console.error(error);
@@ -76,7 +77,7 @@ async function run() {
         };
     });
 
-  // admin login configuration
+  // admin login configuration 
     app.get('/login/admin', (req, res) => {
       res.render('login'); // Render the login page using EJS
     }); 
