@@ -1,10 +1,14 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
-app.use(express.json());
-
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+const bodyParser = require('body-parser');
+const ejs = require('ejs');
+
+app.use(express.json());
+
+//swagger
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -13,11 +17,36 @@ const options = {
       description: 'API for managing visitors in a cybercafe using Swagger and Node.js',
       version: '1.0.0',
     },
+    servers: [
+      {
+        url: `https://cybercafev2.azurewebsites.net/`,
+      },
+    ],
+    components: {
+      securitySchemes: {
+        jwt:{
+                    type: 'http',
+                    scheme: 'bearer',
+                    in: "header",
+                    bearerFormat: 'JWT'
+        },
+      },
+    },
+        security:[{
+            "jwt": []
+  }]
   },
   apis: ['./Cybercafe.js'], //files containing annotations as above
 };
+
 const swaggerSpec = swaggerJsdoc(options);
 app.use('/group23', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+  // Dummy user data (replace with a proper authentication system)
+  const admin = [
+    { username: 'user1', password: 'password1' },
+  ];
+  
 
 //connect to mongodb 
 const { MongoClient, ServerApiVersion } = require('mongodb');
@@ -29,6 +58,11 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
+
+// Set up middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+
 
 async function run() {
   try {
@@ -207,10 +241,7 @@ async function run() {
 
 run().catch(console.dir);
 
-
-
-
-//function 放下面
+//function
 
 async function login(requsername, reqpassword) {
     let matchUser = await client.db('CybercafeV2').collection('admin').findOne({ username: { $eq: requsername } });

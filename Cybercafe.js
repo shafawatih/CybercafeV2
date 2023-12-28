@@ -52,6 +52,7 @@
  * /create/user:
  *   post:
  *     summary: Create a New User
+ *     description: Register a new user
  *     tags:
  *       - User Management
  *     requestBody:
