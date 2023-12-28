@@ -5,6 +5,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
+const path = require('path');
 
 app.use(express.json());
 
@@ -74,7 +75,11 @@ async function run() {
             res.status(500).send("Internal Server Error");
         };
     });
-    
+
+  // admin login configuration
+    app.get('/login/admin', (req, res) => {
+      res.render('login'); // Render the login page using EJS
+    }); 
 
     //create user
     app.post('/create/user', async (req, res) => {
