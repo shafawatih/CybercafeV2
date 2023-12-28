@@ -8,6 +8,10 @@ const ejs = require('ejs');
 
 app.use(express.json());
 
+// Set up middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+
 //swagger
 const options = {
   definition: {
@@ -17,24 +21,6 @@ const options = {
       description: 'API for managing visitors in a cybercafe using Swagger and Node.js',
       version: '1.0.0',
     },
-    servers: [
-      {
-        url: `https://cybercafev2.azurewebsites.net/`,
-      },
-    ],
-    components: {
-      securitySchemes: {
-        jwt:{
-                    type: 'http',
-                    scheme: 'bearer',
-                    in: "header",
-                    bearerFormat: 'JWT'
-        },
-      },
-    },
-        security:[{
-            "jwt": []
-  }]
   },
   apis: ['./Cybercafe.js'], //files containing annotations as above
 };
@@ -43,8 +29,8 @@ const swaggerSpec = swaggerJsdoc(options);
 app.use('/group23', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
   // Dummy user data (replace with a proper authentication system)
-  const admin = [
-    { username: 'user1', password: 'password1' },
+const admin = [
+  { username: 'user1', password: 'password1' },
   ];
   
 
@@ -58,11 +44,6 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
-
-// Set up middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.set('view engine', 'ejs');
-
 
 async function run() {
   try {
