@@ -1,5 +1,5 @@
 ###
-post http://localhost:3000/login/admin
+post https://localhost:3000/login/admin
 Content-Type: application/json
 
 {
@@ -10,7 +10,7 @@ Content-Type: application/json
 //Admin
 
 ###
-post http://localhost:3000/create/user
+post https://localhost:3000/create/user
 //Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDMzMTYwOTAsImV4cCI6MTcwMzMxNjY5MH0.EpMukcGT7bHe80I0-vbdpBiWr-LCyPhCGyT5WGgT6lI
 Content-Type: application/json
 
@@ -21,13 +21,13 @@ Content-Type: application/json
 } 
 
 ###
-GET http://localhost:3000/view/user/admin
+GET https://localhost:3000/view/user/admin
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNoYWZhIiwiaWF0IjoxNzAzNTEwNjkyLCJleHAiOjE3MDM1MTEyOTJ9.FOncnHgV0JNq-HiLk_gdNYvomi7P3B397gZ89lEnhJY
 
 //Visitor
 
 ###
-post http://localhost:3000/create/visitor
+post https://localhost:3000/create/visitor
 Content-Type: application/json
 
 {
@@ -37,13 +37,13 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/view/visitor/admin
+GET https://localhost:3000/view/visitor/admin
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNoYWZhIiwiaWF0IjoxNzAzNTEwNjkyLCJleHAiOjE3MDM1MTEyOTJ9.FOncnHgV0JNq-HiLk_gdNYvomi7P3B397gZ89lEnhJY
 //Visitor log
 
 
 ###
-DELETE http://localhost:3000/delete/visitor/5678
+DELETE https://localhost:3000/delete/visitor/5678
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDM0MDgwMjUsImV4cCI6MTcwMzQwODYyNX0.RSlLQg__4m9HF9DyRZ8oGdweTKiEte-QbnSa6YECXA8
 Content-Type: application/json
 
@@ -53,7 +53,7 @@ Content-Type: application/json
 
 
 ###
-post http://localhost:3000/create/visitorlog/admin
+post https://localhost:3000/create/visitorlog/admin
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDM0MDQyNzEsImV4cCI6MTcwMzQwNDg3MX0.h6HO3lrp1jKXdACLuB3wqs3-9S5NjLbAhs9Z8Svrmbc
 Content-Type: application/json
 
@@ -65,13 +65,13 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/view/visitorlog/admin
+GET https://localhost:3000/view/visitorlog/admin
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDM0MDQ3NTYsImV4cCI6MTcwMzQwNTM1Nn0.jl2KtsfGHSG4MnL54WOCqCYvCo8MjSz8yw0YIjfmd9w
 Content-Type: application/json
 
 
 ###
-POST http://localhost:3000/create/computer
+POST https://localhost:3000/create/computer
 Content-Type: application/json
 
 {
@@ -81,5 +81,5 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/view/computer/admin
+GET https://localhost:3000/view/computer/admin
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDM0MDQ3NTYsImV4cCI6MTcwMzQwNTM1Nn0.jl2KtsfGHSG4MnL54WOCqCYvCo8MjSz8yw0YIjfmd9w
