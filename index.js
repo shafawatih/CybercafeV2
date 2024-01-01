@@ -39,12 +39,14 @@ const user = [
   
 
 //connect to mongodb 
-const { MongoClient} = require('mongodb');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://shafawatih:vJgbDC0jui7JAnAk@cluster0.eha480i.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  //auth: { x509: { username: 'shafawatih', certificateKeyFile: './mongodb-client.pem' } },
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
 });
 
 async function run() {
@@ -333,6 +335,4 @@ function verifyToken(req, res, next) {
     next();
   });
 }
-
-
 
