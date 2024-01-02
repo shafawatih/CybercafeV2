@@ -237,11 +237,11 @@
 
 /**
  * @swagger
- * /create/visitorlog/admin:
+ * /create/visitorpass/admin:
  *   post:
- *     summary: Create a visitor log
+ *     summary: Create a visitor pass
  *     tags:
- *       - Visitor Log
+ *       - Visitor Pass
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -264,7 +264,7 @@
  *         content:
  *           application/json:
  *             example:
- *               message: Visitor Log created successfully
+ *               message: Visitor Pass created successfully
  *       400:
  *         description: Bad Request
  *         content:
@@ -281,11 +281,11 @@
 
 /**
  * @openapi
- * /view/visitorlog/admin:
+ * /view/visitorpass/admin:
  *   get:
- *     summary: View visitor logs
+ *     summary: View visitor passes
  *     tags:
- *       - Visitor Log
+ *       - Visitor Pass
  *     security:
  *       - bearerAuth: []
  *     responses:

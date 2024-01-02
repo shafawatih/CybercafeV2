@@ -163,9 +163,9 @@ async function run() {
     });
 
     
-    //create visitor log
-    app.post('/create/visitorlog/admin', verifyToken, async (req, res) => {
-        let result = createvisitorlog(
+    //create visitor pass
+    app.post('/create/visitorpass/admin', verifyToken, async (req, res) => {
+        let result = createvisitorpass(
         req.body.visitorname,
         req.body.idproof,
         req.body.timespend,
@@ -176,11 +176,11 @@ async function run() {
     
 
     //see created visitor log
-    app.get('/view/visitorlog/admin', verifyToken, async (req, res) => {
+    app.get('/view/visitorpass/admin', verifyToken, async (req, res) => {
         try {
         const result = await client
             .db('CybercafeV2')
-            .collection('visitorlog')
+            .collection('visitorpass')
             .find()
             .toArray();
     
@@ -261,15 +261,15 @@ function createvisitor(reqvisitorname, reqidproof, reqentrytime = 0) {
       return "Visitor is added";
     }
 
-//create visitorlog function
-function createvisitorlog(reqvisitorname, reqidproof, reqtimespend = 0, reqpayment = 0) {
-    client.db('CybercafeV2').collection('visitorlog').insertOne({
+//create visitorpass function
+function createvisitorpass(reqvisitorname, reqidproof, reqtimespend = 0, reqpayment = 0) {
+    client.db('CybercafeV2').collection('visitorpass').insertOne({
         "visitorname": reqvisitorname,
         "idproof": reqidproof,
         "timespend": reqtimespend,
         "payment": reqpayment,
       });
-      return "Visitor log is recorded";
+      return "Visitor pass is recorded";
     }
 
 //create computer function

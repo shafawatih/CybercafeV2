@@ -53,7 +53,7 @@ Content-Type: application/json
 
 
 ###
-post https://localhost:3000/create/visitorlog/admin
+post https://localhost:3000/create/visitorpass/admin
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDM0MDQyNzEsImV4cCI6MTcwMzQwNDg3MX0.h6HO3lrp1jKXdACLuB3wqs3-9S5NjLbAhs9Z8Svrmbc
 Content-Type: application/json
 
@@ -65,7 +65,7 @@ Content-Type: application/json
 }
 
 ###
-GET https://localhost:3000/view/visitorlog/admin
+GET https://localhost:3000/view/visitorpass/admin
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDM0MDQ3NTYsImV4cCI6MTcwMzQwNTM1Nn0.jl2KtsfGHSG4MnL54WOCqCYvCo8MjSz8yw0YIjfmd9w
 Content-Type: application/json
 

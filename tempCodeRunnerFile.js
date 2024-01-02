@@ -1,1 +1,1 @@
-Weak password. Please use a stronger password (Minimum of 8 characters, at least one lowercase letter (a-z), at least one uppercase letter (A-Z), at least one digit (0-9), at least one special character)
+http://localh
