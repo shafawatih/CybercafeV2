@@ -52,7 +52,7 @@
  * /create/user:
  *   post:
  *     summary: Create a New User
- *     description: Register a new user
+ *     description: Create a new user with a strong password.
  *     tags:
  *       - User Management
  *     requestBody:
@@ -73,7 +73,7 @@
  *             example:
  *               message: User created successfully
  *       400:
- *         description: Bad Request
+ *         description: Weak password. Please use a stronger password (Minimum of 8 characters, at least one lowercase letter (a-z), at least one uppercase letter (A-Z), at least one digit (0-9), at least one special character)
  *         content:
  *           application/json:
  *             example:
