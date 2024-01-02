@@ -1,28 +1,44 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
-//const mongoURI = process.env.MONGODB_URI
-app.use(express.json());
-
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+const bodyParser = require('body-parser');
+const ejs = require('ejs');
+const path = require('path');
+
+app.use(express.json());
+
+// Set up middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views')); // Set the views directory
+
+//swagger
 const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Cybercafe Visitor Management System API',
-      description: 'API for managing visitors in a cybercafe',
+      title: 'Cybercafe Visitor Management System GROUP 23',
+      description: 'API for managing visitors in a cybercafe using Swagger and Node.js',
       version: '1.0.0',
     },
   },
   apis: ['./Cybercafe.js'], //files containing annotations as above
 };
+
 const swaggerSpec = swaggerJsdoc(options);
 app.use('/group23', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-//connect to mongodb
+  // Dummy user data (replace with a proper authentication system)
+const user = [
+  { username: 'user1', password: 'password1' },
+  ];
+  
+
+//connect to mongodb 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://b022120004:Kangcn2001@cluster0.kjicgwm.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://shafawatih:vJgbDC0jui7JAnAk@cluster0.eha480i.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -31,14 +47,12 @@ const client = new MongoClient(uri, {
   }
 });
 
-//eee
-
 async function run() {
   try {
     // Connect the client to the server (optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
-    await client.db("Admin").command({ ping: 1 });
+    await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
     app.use(express.json());
@@ -53,16 +67,20 @@ async function run() {
         const result =  await login(req.body.username, req.body.password)
         if (result.message === 'Correct password') {
           const token = generateToken({ username: req.body.username });
-          res.send({ message: 'Successful login', token });
+          res.send({ message: 'Successful login ! Welcome to Cybercafe Visitor Management System, ${req.body.username}!', token });
         } else {
-          res.send('Login unsuccessful');
+          res.send('Login unsuccessful ! Invalid username or password.');
         }
       }catch(error){
             console.error(error);
             res.status(500).send("Internal Server Error");
         };
     });
-    
+
+  // admin login configuration 
+    app.get('/login/admin', (req, res) => {
+      res.render('login'); // Render the login page using EJS
+    }); 
 
     //create user
     app.post('/create/user', async (req, res) => {
@@ -77,8 +95,8 @@ async function run() {
     app.get('/view/user/admin', verifyToken, async (req, res) => {
       try {
       const result = await client
-          .db('Cybercafe')
-          .collection('Admin')
+          .db('CybercafeV2')
+          .collection('admin')
           .find()
           .toArray();
     
@@ -105,46 +123,13 @@ async function run() {
         res.status(500).send("Internal Server Error");
         }
     });
-
-    //create visitor (test)
-    app.post('/create/test/visitor', async (req, res) => {
-      try {
-        let result = await createtestvisitor(
-          req.body.visitorname,
-          req.body.idproof,
-          req.body.entrytime,
-          req.body.approval
-          ); 
-          res.send(result);
-      }
-      catch (error) {
-        console.error(error);
-        res.status(500).send("Internal Server Error");
-        }
-    });
     
     //see created visitor
     app.get('/view/visitor/admin', verifyToken, async (req, res) => {
         try {
         const result = await client
-            .db('Cybercafe')
-            .collection('Visitor')
-            .find()
-            .toArray();
-    
-        res.send(result);
-        } catch (error) {
-        console.error(error);
-        res.status(500).send("Internal Server Error");
-        }
-    });
-
-      //see created visitor (test)
-      app.get('/view/test/visitor/admin', verifyToken, async (req, res) => {
-        try {
-        const result = await client
-            .db('Cybercafe')
-            .collection('Test')
+            .db('CybercafeV2')
+            .collection('visitor')
             .find()
             .toArray();
     
@@ -162,8 +147,8 @@ async function run() {
     
       try {
         const deletevisitorResult = await client
-          .db('Cybercafe')
-          .collection('Visitor')
+          .db('CybercafeV2')
+          .collection('visitor')
           .deleteOne({ idproof: idproof});
     
         if (deletevisitorResult.deletedCount === 0) {
@@ -176,7 +161,6 @@ async function run() {
         res.status(500).send('Internal Server Error');
       }
     });
-
 
     
     //create visitor log
@@ -195,8 +179,8 @@ async function run() {
     app.get('/view/visitorlog/admin', verifyToken, async (req, res) => {
         try {
         const result = await client
-            .db('Cybercafe')
-            .collection('Visitor Log')
+            .db('CybercafeV2')
+            .collection('visitorlog')
             .find()
             .toArray();
     
@@ -222,7 +206,7 @@ async function run() {
     app.get('/view/computer/admin', verifyToken, async (req, res) => {
       try {
         const result = await client
-        .db('Cybercafe').collection('Computer').find().toArray();
+        .db('CybercafeV2').collection('computer').find().toArray();
         
         res.send(result);
       } catch (error) {
@@ -244,13 +228,10 @@ async function run() {
 
 run().catch(console.dir);
 
-
-
-
-//function 放下面
+//function
 
 async function login(requsername, reqpassword) {
-    let matchUser = await client.db('Cybercafe').collection('Admin').findOne({ username: { $eq: requsername } });
+    let matchUser = await client.db('CybercafeV2').collection('admin').findOne({ username: { $eq: requsername } });
   
     if (!matchUser)
       return { message: "User not found!" };
@@ -263,7 +244,7 @@ async function login(requsername, reqpassword) {
 
 //create user function
 function createuser(requsername, reqidproof) {
-  client.db('Cybercafe').collection('Admin').insertOne({
+  client.db('CybercafeV2').collection('admin').insertOne({
       "username": requsername,
       "idproof": reqidproof,
     });
@@ -271,8 +252,8 @@ function createuser(requsername, reqidproof) {
   }
   
 //create visitor function
-function createvisitor(reqvisitorname, reqidproof, reqentrytime = "0") {
-    client.db('Cybercafe').collection('Visitor').insertOne({
+function createvisitor(reqvisitorname, reqidproof, reqentrytime = 0) {
+    client.db('CybercafeV2').collection('visitor').insertOne({
         "visitorname": reqvisitorname,
         "idproof": reqidproof,
         "entrytime":reqentrytime
@@ -280,20 +261,9 @@ function createvisitor(reqvisitorname, reqidproof, reqentrytime = "0") {
       return "Visitor is added";
     }
 
-//create visitor function (test)
-function createtestvisitor(reqvisitorname, reqidproof, reqentrytime = "0", reqapproval) {
-  client.db('Cybercafe').collection('Test').insertOne({
-      "visitorname": reqvisitorname,
-      "idproof": reqidproof,
-      "entrytime":reqentrytime,
-      "approval":reqapproval
-    });
-    return "Visitor is added";
-  }
-
 //create visitorlog function
 function createvisitorlog(reqvisitorname, reqidproof, reqtimespend = 0, reqpayment = 0) {
-    client.db('Cybercafe').collection('Visitor Log').insertOne({
+    client.db('CybercafeV2').collection('visitorlog').insertOne({
         "visitorname": reqvisitorname,
         "idproof": reqidproof,
         "timespend": reqtimespend,
@@ -304,7 +274,7 @@ function createvisitorlog(reqvisitorname, reqidproof, reqtimespend = 0, reqpayme
 
 //create computer function
 function createcomputer(reqidproof, reqLanportno, reqAvailable) {
-  client.db('Cybercafe').collection('Computer').insertOne({
+  client.db('CybercafeV2').collection('computer').insertOne({
 
       "idproof": reqidproof,
       "lanportno": reqLanportno,
@@ -344,4 +314,4 @@ function verifyToken(req, res, next) {
     req.admin = decoded;
     next();
   });
-}
+} 
