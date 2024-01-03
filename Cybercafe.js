@@ -237,9 +237,90 @@
 
 /**
  * @swagger
+ * /create/test/visitor:
+ *   post:
+ *     summary: Create a Visitor with Security Approval
+ *     tags:
+ *       - Approved Visitor List 
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               visitorname:
+ *                 type: string
+ *               idproof:
+ *                 type: string
+ *               entrytime:
+ *                 type: string
+ *               approval:
+ *                 type: string
+ * 
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: Visitor Created Successfully
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Invalid input data
+ *
+ *     examples:
+ *       'application/json':
+ *         visitorname: JohnDoe
+ *         idproof: XYZ123
+ *         entrytime: 1530
+ *         approval: yes
+ */
+
+/**
+ * @openapi
+ * paths:
+ *   /view/test/visitor/admin:
+ *     get:
+ *       summary: View Approved Visitors
+ *       tags:
+ *         - Approved Visitor List
+ *       security:
+ *         - bearerAuth: []
+ *       responses:
+ *         '200':
+ *           description: Successfully retrieved visitor information.
+ *           content:
+ *             application/json:
+ *               example:
+ *                 visitors:
+ *                   - visitorname: "Nur"
+ *                     idproof: "B23134"
+ *                     entrytime: "1530"
+ *                     approval: "yes"
+ *         '401':
+ *           description: Unauthorized. Only admin can view
+ *           content:
+ *             application/json:
+ *               example:
+ *                 error: "Unauthorized"
+ *         '500':
+ *           description: Internal Server Error.
+ *           content:
+ *             application/json:
+ *               example:
+ *                 error: "Internal Server Error"
+ */
+
+
+
+/**
+ * @swagger
  * /create/visitorpass/admin:
  *   post:
- *     summary: Create a visitor pass
+ *     summary: Create a Visitor Pass
  *     tags:
  *       - Visitor Pass
  *     security:
@@ -283,7 +364,7 @@
  * @openapi
  * /view/visitorpass/admin:
  *   get:
- *     summary: View visitor passes
+ *     summary: View Visitor Passes
  *     tags:
  *       - Visitor Pass
  *     security:
@@ -302,8 +383,6 @@
  *       401:
  *         description: Unauthorized
  */
-
-
 
 /**
  * @swagger
@@ -343,7 +422,6 @@
  *         username: JohnDoe
  *         idproof: XYZ123
  */
-
 
 /**
  * @openapi

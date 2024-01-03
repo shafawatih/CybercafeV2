@@ -57,7 +57,7 @@ async function run() {
 
     app.use(express.json());
     app.listen(port, () => {
-      console.log('Server listening at http://localhost:${port}');
+      console.log('Server listening at https://localhost:${port}');
     });
     
 
@@ -123,6 +123,39 @@ async function run() {
         res.status(500).send("Internal Server Error");
         }
     });
+
+    //create visitor (test)
+    app.post('/create/test/visitor', async (req, res) => {
+      try {
+        let result = await createtestvisitor(
+          req.body.visitorname,
+          req.body.idproof,
+          req.body.entrytime,
+          req.body.approval
+          ); 
+          res.send(result);
+      }
+      catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+        }
+    });
+
+     //see created visitor (test)
+     app.get('/view/test/visitor/admin', verifyToken, async (req, res) => {
+      try {
+      const result = await client
+          .db('CybercafeV2')
+          .collection('test')
+          .find()
+          .toArray();
+  
+      res.send(result);
+      } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+      }
+  });
     
     //see created visitor
     app.get('/view/visitor/admin', verifyToken, async (req, res) => {
@@ -260,6 +293,17 @@ function createvisitor(reqvisitorname, reqidproof, reqentrytime = 0) {
       });
       return "Visitor is added";
     }
+
+//create visitor function (test)
+function createtestvisitor(reqvisitorname, reqidproof, reqentrytime = "0", reqapproval) {
+  client.db('CybercafeV2').collection('test').insertOne({
+      "visitorname": reqvisitorname,
+      "idproof": reqidproof,
+      "entrytime":reqentrytime,
+      "approval":reqapproval
+    });
+    return "Visitor is added";
+  }
 
 //create visitorpass function
 function createvisitorpass(reqvisitorname, reqidproof, reqtimespend = 0, reqpayment = 0) {
