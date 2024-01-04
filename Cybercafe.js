@@ -10,9 +10,11 @@
 
 /**
  * @swagger
- * /login/admin:
+ *   /login/admin:
  *   post:
- *     summary: Perform login admin
+ *     summary: Perform Admin Login
+ *     description: 
+ *       - Authenticate admin user
  *     tags:
  *       - Admin Access
  *     requestBody:
@@ -26,18 +28,21 @@
  *               password:
  *                 type: string
  *     responses:
- *       200:
- *         description: Success
+ *       '200':
+ *         description: Successful login
  *         content:
  *           application/json:
  *             example:
- *               message: Admin created successfully
- *       400:
+ *               message: Successful login
+ *               token: <generated_token>
+ *       '400':
  *         description: Bad Request
  *         content:
  *           application/json:
  *             example:
  *               error: Invalid input data
+ *       '500':
+ *         description: Internal Server Error
  *
  *     examples:
  *       'application/json':
@@ -52,7 +57,8 @@
  * /create/user:
  *   post:
  *     summary: Create a New User
- *     description: Create a new user with a strong password.
+ *     description: 
+ *       - Create a new user with a strong password.
  *     tags:
  *       - User Management
  *     requestBody:
@@ -64,6 +70,8 @@
  *               username:
  *                 type: string
  *               idproof:
+ *                 type: string
+ *               password:
  *                 type: string
  *     responses:
  *       200:
@@ -91,7 +99,9 @@
  * paths:
  *   /view/user/admin:
  *     get:
- *       summary: View List of Users
+ *       summary: View List of Users (only admin)
+ *       description: 
+ *         - Get a list of all users (admin access required)
  *       tags:
  *         - User Management
  *       security:

@@ -1,4 +1,6 @@
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
 const app = express();
 const port = process.env.PORT || 3000;
 const swaggerUi = require('swagger-ui-express');
@@ -61,35 +63,82 @@ async function run() {
     });
     
 
-//admin login configuration
-    app.post('/login/admin', async (req, res) => {
-      try{
-        const result =  await login(req.body.username, req.body.password)
-        if (result.message === 'Correct password') {
-          const token = generateToken({ username: req.body.username });
-          res.send({ message: 'Successful login ! Welcome to Cybercafe Visitor Management System, ${req.body.username}!', token });
-        } else {
-          res.send('Login unsuccessful ! Invalid username or password.');
-        }
-      }catch(error){
-            console.error(error);
-            res.status(500).send("Internal Server Error");
-        };
-    });
+    //admin login configuration
+app.post('/login/admin', async (req, res) => {
+  try {
+    const result = await login(req.body.username, req.body.password);
+    if (result.message === 'Correct password') {
+      const token = generateToken({ username: req.body.username });
+      res.send({ message: `Successful login! Welcome to Cybercafe Visitor Management System, ${req.body.username}!`, token });
+    } else {
+      res.send('Login unsuccessful! Invalid username or password.');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
+// admin login configuration
+app.post('/login/admin', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    if (!isStrongPassword(password)) {
+      return res.status(400).send('Weak password. Please use a stronger password.');
+    }
+
+    const result = await login(username, password);
+
+    if (result.message === 'Correct password') {
+      const token = generateToken({ username });
+      res.send({ message: `Successful login! Welcome to Cybercafe Visitor Management System, ${username}!`, token });
+    } else {
+      res.send('Login unsuccessful! Invalid username or password.');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
   // admin login configuration 
     app.get('/login/admin', (req, res) => {
       res.render('login'); // Render the login page using EJS
     }); 
 
-    //create user
+  // Add a function to check password strength
+    function isStrongPassword(password) {
+    // Implement your own password strength rules
+    return (
+      password.length >= 8 &&
+      /[a-z]/.test(password) &&
+      /[A-Z]/.test(password) &&
+      /\d/.test(password) &&
+      /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password)
+    );
+  }
+
+  //create user
     app.post('/create/user', async (req, res) => {
-      let result = createuser(
-      req.body.username,
-      req.body.idproof
-      ); 
-      res.send(result);
-  });
+      const { username, idproof, password } = req.body;
+    
+      // Check if the password meets the strength criteria
+      if (!isStrongPassword(password)) {
+        return res.status(400).send('Weak password. Please use a stronger password.');
+      }
+    
+      try {
+        // Create the user if password is strong
+        let result = createuser(username, idproof, password);
+        //res.send(result);
+        res.status(200).send('Success. New user created');
+      } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+      }
+    });
 
     //see created user
     app.get('/view/user/admin', verifyToken, async (req, res) => {
@@ -275,14 +324,35 @@ async function login(requsername, reqpassword) {
      return { message: "Invalid password" };
   }
 
+// Add a function to check password strength
+function isStrongPassword(password) {
+  // Implement your own password strength rules
+  return (
+    password.length >= 8 &&
+    /[a-z]/.test(password) &&
+    /[A-Z]/.test(password) &&
+    /\d/.test(password) &&
+    /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password)
+  );
+}
+
 //create user function
-function createuser(requsername, reqidproof) {
-  client.db('CybercafeV2').collection('admin').insertOne({
-      "username": requsername,
-      "idproof": reqidproof,
-    });
-    return "User is added";
+function createuser(requsername, reqidproof, reqpassword) {
+  // Check the password strength again before inserting into the database
+  if (!isStrongPassword(reqpassword)) {
+    return 'Weak password. Please use a stronger password (Minimum of 8 characters, at least one lowercase letter (a-z), at least one uppercase letter (A-Z), at least one digit (0-9), at least one special character)';
   }
+
+  // Rest of your user creation logic...
+  client.db('CybercafeV2').collection('admin').insertOne({
+    "username": requsername,
+    "idproof": reqidproof,
+    "password": reqpassword, // Store the hashed password, not the plain text
+  });
+
+  return "User is added";
+}
+
   
 //create visitor function
 function createvisitor(reqvisitorname, reqidproof, reqentrytime = 0) {
