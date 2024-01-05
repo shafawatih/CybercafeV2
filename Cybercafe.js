@@ -6,11 +6,15 @@
  *       type: http
  *       scheme: bearer
  *       bearerFormat: JWT
+ *     adminAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 
 /**
  * @swagger
- *   /login/admin:
+ * /admin/login:
  *   post:
  *     summary: Perform Admin Login
  *     description: 
@@ -33,8 +37,64 @@
  *         content:
  *           application/json:
  *             example:
- *               message: Successful login
- *               token: <generated_token>
+ *               message: Admin login successful
+ *               hostsData: 
+ *                 - hostName: "Host1"
+ *                   ipAddress: "192.168.1.1"
+ *                 - hostName: "Host2"
+ *                   ipAddress: "192.168.1.2"
+ *       '400':
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Invalid input data
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Unauthorized
+ *       '500':
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Internal Server Error
+ *
+ *     examples:
+ *       'application/json':
+ *         username: adminUser
+ *         password: adminPassword
+ */
+
+
+/**
+ * @swagger
+ *   /login:
+ *   post:
+ *     summary: Perform Admin Login
+ *     description: 
+ *       - Authenticate admin user
+ *     tags:
+ *       - Admin Access
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Successful login
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: Admin Created Successfully
  *       '400':
  *         description: Bad Request
  *         content:
@@ -54,14 +114,17 @@
 
 /**
  * @swagger
- * /create/user:
+ * /register/user:
  *   post:
  *     summary: Create a New User
  *     description: 
  *       - Create a new user with a strong password.
  *     tags:
  *       - User Management
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
+ *       required: true
  *       content:
  *         application/json:
  *           schema:
@@ -69,9 +132,9 @@
  *             properties:
  *               username:
  *                 type: string
- *               idproof:
- *                 type: string
  *               password:
+ *                 type: string
+ *               email:
  *                 type: string
  *     responses:
  *       200:
@@ -106,6 +169,7 @@
  *         - User Management
  *       security:
  *         - bearerAuth: []
+ *         - adminAuth: []
  *       responses:
  *         '200':
  *           description: Successfully retrieved user information.

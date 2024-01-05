@@ -1,22 +1,15 @@
 const express = require('express');
-const https = require('https');
-const fs = require('fs');
 const app = express();
+const bcrypt = require('bcrypt');
 const port = process.env.PORT || 3000;
-const swaggerUi = require('swagger-ui-express');
-const swaggerJsdoc = require('swagger-jsdoc');
-const bodyParser = require('body-parser');
-const ejs = require('ejs');
-const path = require('path');
-
+const dbName = 'CybercafeV2';
+const collection1 = "user"
+const collection2 = "visitor" 
+//const mongoURI = process.env.MONGODB_URI
 app.use(express.json());
 
-// Set up middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views')); // Set the views directory
-
-//swagger
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -28,19 +21,13 @@ const options = {
   },
   apis: ['./Cybercafe.js'], //files containing annotations as above
 };
-
 const swaggerSpec = swaggerJsdoc(options);
 app.use('/group23', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-  // Dummy user data (replace with a proper authentication system)
-const user = [
-  { username: 'user1', password: 'password1' },
-  ];
-  
 
-//connect to mongodb 
+//connect to mongodb
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://shafawatih:vJgbDC0jui7JAnAk@cluster0.eha480i.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://shafawatih:Shafa.123@cluster0.eha480i.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -49,103 +36,89 @@ const client = new MongoClient(uri, {
   }
 });
 
+//eee
+
 async function run() {
   try {
     // Connect the client to the server (optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
     app.use(express.json());
     app.listen(port, () => {
-      console.log('Server listening at https://localhost:${port}');
+      console.log('Server listening at http://localhost:${port}');
     });
     
-
-    //admin login configuration
-app.post('/login/admin', async (req, res) => {
-  try {
-    const result = await login(req.body.username, req.body.password);
-    if (result.message === 'Correct password') {
-      const token = generateToken({ username: req.body.username });
-      res.send({ message: `Successful login! Welcome to Cybercafe Visitor Management System, ${req.body.username}!`, token });
-    } else {
-      res.send('Login unsuccessful! Invalid username or password.');
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-
-// admin login configuration
-app.post('/login/admin', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-
-    if (!isStrongPassword(password)) {
-      return res.status(400).send('Weak password. Please use a stronger password.');
-    }
-
-    const result = await login(username, password);
-
-    if (result.message === 'Correct password') {
-      const token = generateToken({ username });
-      res.send({ message: `Successful login! Welcome to Cybercafe Visitor Management System, ${username}!`, token });
-    } else {
-      res.send('Login unsuccessful! Invalid username or password.');
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-  // admin login configuration 
-    app.get('/login/admin', (req, res) => {
-      res.render('login'); // Render the login page using EJS
-    }); 
-
-  // Add a function to check password strength
-    function isStrongPassword(password) {
-    // Implement your own password strength rules
-    return (
-      password.length >= 8 &&
-      /[a-z]/.test(password) &&
-      /[A-Z]/.test(password) &&
-      /\d/.test(password) &&
-      /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password)
-    );
-  }
-
-  //create user
-    app.post('/create/user', async (req, res) => {
-      const { username, idproof, password } = req.body;
-    
-      // Check if the password meets the strength criteria
-      if (!isStrongPassword(password)) {
-        return res.status(400).send('Weak password. Please use a stronger password.');
-      }
-    
+    app.post('/admin/login', async (req, res) => {
       try {
-        // Create the user if password is strong
-        let result = createuser(username, idproof, password);
-        //res.send(result);
-        res.status(200).send('Success. New user created');
+        const result = await login(req.body.username, req.body.password);
+        if (result.message === 'Correct password') {
+          // Dump all hosts' data here
+          const hostsData = await client.db(dbName).collection(collection1).find().toArray();
+          res.send({ message: `Successful admin login! Welcome, ${req.body.username}!`, hostsData });
+        } else {
+          res.send('Admin login unsuccessful');
+        }
       } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
-      }
+        res.status(500).send("Internal Server Error");
+      };
     });
 
+
+//user login configuration
+app.post('/login', async (req, res) => {
+  try{
+    const result =  await login(req.body.username, req.body.password)
+    if (result.message == 'Correct password') {
+      const user1 = await client.db(dbName).collection(collection1).findOne({username: req.body.username});
+      const token = await generateToken({ username: req.body.username , role: user1.role});
+      res.send({ message: `Successful login! Welcome to Cybercafe Visitor Management System, ${req.body.username}!`, token });
+    } else {
+      res.send('Login unsuccessful');
+    }
+  }catch(error){
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    };
+});
+
+
+//register user configuration
+app.post('/register/user', authenticateAdmin, async (req, res) => {
+  let result = await registeruser(
+  req.body.username,
+  req.body.password,
+  req.body.email
+  ); 
+  res.send(result);
+});
+
+
+    
+
+//user create visitor
+    app.post('/create/visitor/user', verifyToken, async (req, res) => {
+        let result = createvisitor(
+        req.body.visitorname,
+        req.body.timespend,
+        req.body.age,
+        req.body.phonenumber
+        ); 
+        res.send(result);
+    });
+
+
+
+    //start sini
+
     //see created user
-    app.get('/view/user/admin', verifyToken, async (req, res) => {
+    app.get('/view/user/admin', authenticateAdmin, async (req, res) => {
       try {
       const result = await client
           .db('CybercafeV2')
-          .collection('admin')
+          .collection('user')
           .find()
           .toArray();
     
@@ -189,22 +162,6 @@ app.post('/login/admin', async (req, res) => {
         res.status(500).send("Internal Server Error");
         }
     });
-
-     //see created visitor (test)
-     app.get('/view/test/visitor/admin', verifyToken, async (req, res) => {
-      try {
-      const result = await client
-          .db('CybercafeV2')
-          .collection('test')
-          .find()
-          .toArray();
-  
-      res.send(result);
-      } catch (error) {
-      console.error(error);
-      res.status(500).send("Internal Server Error");
-      }
-  });
     
     //see created visitor
     app.get('/view/visitor/admin', verifyToken, async (req, res) => {
@@ -212,6 +169,22 @@ app.post('/login/admin', async (req, res) => {
         const result = await client
             .db('CybercafeV2')
             .collection('visitor')
+            .find()
+            .toArray();
+    
+        res.send(result);
+        } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+        }
+    });
+
+      //see created visitor (test)
+      app.get('/view/test/visitor/admin', verifyToken, async (req, res) => {
+        try {
+        const result = await client
+            .db('CybercafeV2')
+            .collection('test')
             .find()
             .toArray();
     
@@ -244,8 +217,9 @@ app.post('/login/admin', async (req, res) => {
       }
     });
 
+
     
-    //create visitor pass
+    //create visitor log
     app.post('/create/visitorpass/admin', verifyToken, async (req, res) => {
         let result = createvisitorpass(
         req.body.visitorname,
@@ -257,7 +231,7 @@ app.post('/login/admin', async (req, res) => {
     });
     
 
-    //see created visitor log
+    //see created visitorpass
     app.get('/view/visitorpass/admin', verifyToken, async (req, res) => {
         try {
         const result = await client
@@ -310,59 +284,64 @@ app.post('/login/admin', async (req, res) => {
 
 run().catch(console.dir);
 
-//function
+
+
+
+//function 放下面
 
 async function login(requsername, reqpassword) {
-    let matchUser = await client.db('CybercafeV2').collection('admin').findOne({ username: { $eq: requsername } });
-  
-    if (!matchUser)
-      return { message: "User not found!" };
-  
-    if (matchUser.password === reqpassword)
-      return { message: "Correct password", user: matchUser };
-    else
-     return { message: "Invalid password" };
-  }
+  let matchUser = await client.db('CybercafeV2').collection('user').findOne({ username:requsername });
 
-// Add a function to check password strength
-function isStrongPassword(password) {
-  // Implement your own password strength rules
-  return (
-    password.length >= 8 &&
-    /[a-z]/.test(password) &&
-    /[A-Z]/.test(password) &&
-    /\d/.test(password) &&
-    /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password)
-  );
+  if (!matchUser || matchUser.role !=='admin')
+    return { message: "User not found!" };
+  const isPasswordValid = await bcrypt.compare(reqpassword, matchUser.password);
+  //console.log("run");
+  if (isPasswordValid)
+    return { message: "Correct password", user: matchUser };
+  else
+   return { message: "Invalid password" };
 }
 
-//create user function
-function createuser(requsername, reqidproof, reqpassword) {
-  // Check the password strength again before inserting into the database
-  if (!isStrongPassword(reqpassword)) {
-    return 'Weak password. Please use a stronger password (Minimum of 8 characters, at least one lowercase letter (a-z), at least one uppercase letter (A-Z), at least one digit (0-9), at least one special character)';
-  }
+/*register user function
+function registeruser(requsername, reqpassword, reqemail) {
+  client.db('VMS').collection('User').insertOne({
+      "username": requsername,
+      "password": reqpassword,
+      "email":reqemail
+    });
+    return "User is created.";
+  }*/
 
-  // Rest of your user creation logic...
-  client.db('CybercafeV2').collection('admin').insertOne({
-    "username": requsername,
-    "idproof": reqidproof,
-    "password": reqpassword, // Store the hashed password, not the plain text
-  });
-
-  return "User is added";
-}
-
+  async function registeruser(requsername, reqpassword, reqemail) {
+    try{
+      const hash = await bcrypt.hash(reqpassword, 10);
+      await client.db(dbName).collection(collection1).insertOne({
+          "username": requsername,
+          "password": hash,
+          "email":reqemail,
+          role: "host",
+          visitors: []
+        });
+        return "User is created.";
+    }catch(error){
+      console.error(error);
+      return "Error creating user. ";
+    }
   
-//create visitor function
-function createvisitor(reqvisitorname, reqidproof, reqentrytime = 0) {
+    }
+  
+//user create visitor function
+function createvisitor(reqvisitorname, reqtimespend = "0", reqage, reqphonenumber = "0") {
     client.db('CybercafeV2').collection('visitor').insertOne({
         "visitorname": reqvisitorname,
-        "idproof": reqidproof,
-        "entrytime":reqentrytime
+        "timespend":reqtimespend,
+        "age":reqage,
+        "phonenumber":reqphonenumber
       });
-      return "Visitor is added";
+      return "Visitor is added.";
     }
+
+
 
 //create visitor function (test)
 function createtestvisitor(reqvisitorname, reqidproof, reqentrytime = "0", reqapproval) {
@@ -375,7 +354,7 @@ function createtestvisitor(reqvisitorname, reqidproof, reqentrytime = "0", reqap
     return "Visitor is added";
   }
 
-//create visitorpass function
+//create visitorlog function
 function createvisitorpass(reqvisitorname, reqidproof, reqtimespend = 0, reqpayment = 0) {
     client.db('CybercafeV2').collection('visitorpass').insertOne({
         "visitorname": reqvisitorname,
@@ -383,7 +362,7 @@ function createvisitorpass(reqvisitorname, reqidproof, reqtimespend = 0, reqpaym
         "timespend": reqtimespend,
         "payment": reqpayment,
       });
-      return "Visitor pass is recorded";
+      return "Visitorpass is recorded";
     }
 
 //create computer function
@@ -428,4 +407,30 @@ function verifyToken(req, res, next) {
     req.admin = decoded;
     next();
   });
-} 
+}
+
+
+//new add
+function authenticateAdmin(req, res, next) {
+  let header = req.headers.authorization;
+  if (!header) {
+    res.status(401).send('Unauthorized, missing token');
+    return;
+  }
+
+  let token = header.split(' ')[1];
+
+  jwt.verify(token, 'password', function (err, decoded) {
+    if (err) {
+      res.status(403).send('Invalid token');
+      return;
+    }else{
+      if(decoded.role !== 'admin'){
+        res.status(403).send("Forbidden: Insufficient permissions")
+      }
+      //add this in case your response is in another route, therefore you can retrieve the token at the terminal
+      console.log('Decoded token:',decoded);
+      return next();
+    }
+  });
+}

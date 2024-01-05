@@ -1,68 +1,41 @@
+
 ###
-post https://localhost:3000/login/admin
+post http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "username":"shafa",
-    "password":"A0987"
+    "username":"Kang2001",
+    "password":"1234_abcd"
 }
 
 //Admin
 
 ###
-post https://localhost:3000/create/user
-//Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDMzMTYwOTAsImV4cCI6MTcwMzMxNjY5MH0.EpMukcGT7bHe80I0-vbdpBiWr-LCyPhCGyT5WGgT6lI
+post http://localhost:3000/register/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkthbmcyMDAxIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzA0NDM3OTIzLCJleHAiOjE3MDQ0Mzg1MjN9.P6Olu5ly87ZmZC62KVaRvmO8fibyi6ywQzjZyNJlsKA
 Content-Type: application/json
 
 {
-    "username":"chiawna",
-    "idproof":"b022120004"
-
+    "username":"Siti",
+    "password":"b022124",
+    "email":"siti123@gmail.com"
 } 
 
-###
-GET https://localhost:3000/view/user/admin
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNoYWZhIiwiaWF0IjoxNzAzNTEwNjkyLCJleHAiOjE3MDM1MTEyOTJ9.FOncnHgV0JNq-HiLk_gdNYvomi7P3B397gZ89lEnhJY
-
-//Visitor
 
 ###
-post https://localhost:3000/create/visitor
+post http://localhost:3000/create/visitor/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkthbmcyMDAxIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzA0NDM3OTIzLCJleHAiOjE3MDQ0Mzg1MjN9.P6Olu5ly87ZmZC62KVaRvmO8fibyi6ywQzjZyNJlsKA
 Content-Type: application/json
 
 {
-    "visitorname": "Dr Aisyah",
-    "idproof": "d123",
-    "entrytime":1045
-}
-
-###
-GET https://localhost:3000/view/visitor/admin
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNoYWZhIiwiaWF0IjoxNzAzNTEwNjkyLCJleHAiOjE3MDM1MTEyOTJ9.FOncnHgV0JNq-HiLk_gdNYvomi7P3B397gZ89lEnhJY
-//Visitor log
-
-
-###
-DELETE https://localhost:3000/delete/visitor/5678
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDM0MDgwMjUsImV4cCI6MTcwMzQwODYyNX0.RSlLQg__4m9HF9DyRZ8oGdweTKiEte-QbnSa6YECXA8
-Content-Type: application/json
-
-{
-    "idproof": "5678"
+    "visitorname": "Lee",
+    "timespend":"1",
+    "age":"15",
+    "phonenumber":"0126531789"
 }
 
 
-###
-post https://localhost:3000/create/visitorpass/admin
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDM0MDQyNzEsImV4cCI6MTcwMzQwNDg3MX0.h6HO3lrp1jKXdACLuB3wqs3-9S5NjLbAhs9Z8Svrmbc
-Content-Type: application/json
 
-{
-    "visitorname": "dr khoo",
-    "idproof": "d123",
-    "timespend": 3,
-    "payment": 12
-}
 
 ###
 post http://localhost:3000/create/test/visitor
@@ -76,17 +49,48 @@ Content-Type: application/json
 }
 
 ###
-GET GET http://localhost:3000/view/visitor/admin
-Authorization: Bearer 
+GET http://localhost:3000/view/visitor/admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkthbmcyMDAxIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzA0NDM3OTIzLCJleHAiOjE3MDQ0Mzg1MjN9.P6Olu5ly87ZmZC62KVaRvmO8fibyi6ywQzjZyNJlsKA
+
 
 ###
-GET https://localhost:3000/view/visitorpass/admin
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDM0MDQ3NTYsImV4cCI6MTcwMzQwNTM1Nn0.jl2KtsfGHSG4MnL54WOCqCYvCo8MjSz8yw0YIjfmd9w
+GET http://localhost:3000/view/test/visitor/admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDQwOTkyNTgsImV4cCI6MTcwNDA5OTg1OH0.SCvTyAWKI7ZIepogvkeTktUCZ_pPbSYHqaXlzoX2AYQ
+
+
+###
+DELETE http://localhost:3000/delete/visitor/5678
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDM0MTcwMTMsImV4cCI6MTcwMzQxNzYxM30.EpkbihyKjKazLHI9HHNaiqNQIMoZIUTikmMc4B0d800
+Content-Type: application/json
+
+{
+    "idproof": "5678"
+}
+
+
+
+//Visitor pass
+
+###
+post http://localhost:3000/create/visitorpass/admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDM0MTcwMTMsImV4cCI6MTcwMzQxNzYxM30.EpkbihyKjKazLHI9HHNaiqNQIMoZIUTikmMc4B0d800
+Content-Type: application/json
+
+{
+    "visitorname": "dr khoo",
+    "idproof": "d123",
+    "timespend": 3,
+    "payment": 12
+}
+
+###
+GET http://localhost:3000/view/visitorpass/admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDM0MTcwMTMsImV4cCI6MTcwMzQxNzYxM30.EpkbihyKjKazLHI9HHNaiqNQIMoZIUTikmMc4B0d800
 Content-Type: application/json
 
 
 ###
-POST https://localhost:3000/create/computer
+POST http://localhost:3000/create/computer
 Content-Type: application/json
 
 {
@@ -96,5 +100,5 @@ Content-Type: application/json
 }
 
 ###
-GET https://localhost:3000/view/computer/admin
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXIiLCJpYXQiOjE3MDM0MDQ3NTYsImV4cCI6MTcwMzQwNTM1Nn0.jl2KtsfGHSG4MnL54WOCqCYvCo8MjSz8yw0YIjfmd9w
+GET http://localhost:3000/view/computer/admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkthbmcyMDAxIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzA0NDM3OTIzLCJleHAiOjE3MDQ0Mzg1MjN9.P6Olu5ly87ZmZC62KVaRvmO8fibyi6ywQzjZyNJlsKA
