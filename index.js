@@ -105,6 +105,7 @@ app.post('/register/user', authenticateAdmin, async (req, res) => {
     app.post('/create/visitor/user', verifyToken, async (req, res) => {
         let result = createvisitor(
         req.body.visitorname,
+        req.body.idproof,
         req.body.timespend,
         req.body.age,
         req.body.phonenumber

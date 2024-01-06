@@ -211,12 +211,14 @@
  *             properties:
  *               visitorname:
  *                 type: string
+ *               idproof:
+ *                 type: string
  *               timespend:
  *                 type: string
  *               age:
  *                 type: string
  *               phonenumber:
- *                 type: integer
+ *                 type: string
  *     responses:
  *       200:
  *         description: Success
@@ -416,7 +418,7 @@
  *               age:
  *                 type: string
  *               phonenumber:
- *                 type: integer
+ *                 type: string
  *     responses:
  *       200:
  *         description: Success
