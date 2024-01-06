@@ -236,7 +236,7 @@ app.post('/register/user', authenticateAdmin, async (req, res) => {
 
         if (existingVisitor) {
             // If visitor already exists, update the timespend and payment
-            await client.db(dbName).collection("visitorpass").updateOne(
+            await client.db(dbName).collection("visitor").updateOne(
                 { "visitorname": visitorname },
                 { $set: { "timespend": timespend, "payment": payment } }
             );
@@ -402,7 +402,7 @@ function registeruser(requsername, reqpassword, reqemail) {
   
       if (existingVisitor) {
         // If visitor already exists, update the timespend and payment or perform other actions as needed
-        await client.db(dbName).collection("visitorpass").updateOne(
+        await client.db(dbName).collection("visitor").updateOne(
           { "visitorname": visitorname },
           { $set: { "timespend": timespend, "payment": payment } }
         );
