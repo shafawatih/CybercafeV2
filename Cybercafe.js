@@ -388,6 +388,50 @@
  *                 error: "Internal Server Error"
  */
 
+/**
+ * @swagger
+ * /issue/visitorpass:
+ *   post:
+ *     summary: Issue a Visitor Pass for an Authenticated Admin
+ *     tags:
+ *       - Visitor Pass
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               visitorname:
+ *                 type: string
+ *               idproof:
+ *                 type: string
+ *               timespend:
+ *                 type: string
+ *               payment:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: Visitor Pass issued successfully
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Invalid input data
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Unauthorized
+ */
+
 
 
 /**
@@ -454,6 +498,9 @@
  *                 timespend: 2 hours 30 minutes
  *                 payment: $10
  *               - visitorname: Jane Doe
+ *                 idproof: J12345
+ *                 timespend: 1 hour
+ *                 payment: $5
  *       401:
  *         description: Unauthorized
  */
