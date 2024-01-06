@@ -133,7 +133,7 @@ app.post('/register/user', authenticateAdmin, async (req, res) => {
   });
 
     
-    //create visitor
+    /*/create visitor
     app.post('/create/visitor', async (req, res) => {
       try {
         let result = await createvisitor(
@@ -147,7 +147,7 @@ app.post('/register/user', authenticateAdmin, async (req, res) => {
         console.error(error);
         res.status(500).send("Internal Server Error");
         }
-    });
+    });*/
 
     //create visitor (test)
     app.post('/create/test/visitor', async (req, res) => {

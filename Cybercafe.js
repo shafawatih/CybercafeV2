@@ -198,7 +198,7 @@
 
 /**
  * @swagger
- * /create/visitor:
+ * /create/visitor/user:
  *   post:
  *     summary: Register a New Visitor
  *     tags:
@@ -211,10 +211,12 @@
  *             properties:
  *               visitorname:
  *                 type: string
- *               idproof:
+ *               timespend:
  *                 type: string
- *               entrytime:
+ *               age:
  *                 type: string
+ *               phonenumber:
+ *                 type: integer
  *     responses:
  *       200:
  *         description: Success
@@ -411,6 +413,10 @@
  *                 type: string
  *               payment:
  *                 type: string
+ *               age:
+ *                 type: string
+ *               phonenumber:
+ *                 type: integer
  *     responses:
  *       200:
  *         description: Success
